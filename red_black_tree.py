@@ -137,7 +137,7 @@ class tree:
                 w = x.parent.left
                 if w.color == RED:
                     w.color = BLACK
-                    x.p.color = RED
+                    x.parent.color = RED
                     self.right_rotate(x.parent)
                     w = x.parent.left
                 if w.right.color == BLACK and w.left.color == BLACK:
@@ -224,11 +224,9 @@ class node:
             print("(" + str(self.key) + ", " + self.get_color(), end = ') ') 
         elif level > 1: 
             if self.left != NIL:
-                self.left.print_level(level - 1) 
-            else: print("nil", end=" ")
+                self.left.print_level(level - 1)
             if self.right != NIL: 
-                self.right.print_level(level - 1) 
-            else: print("nil", end=" ")
+                self.right.print_level(level - 1)
 
     #gets the color of a node in a human-readable string
     def get_color(self):
@@ -299,7 +297,7 @@ while 1:
         node = t.find_node(user_input)
         if node != NIL and node != None:
             t.rb_delete(node)
-        else: 
+        else:
             print("Node does not exist")
         t.print_tree()
     elif user_input == "BLKH":
@@ -307,7 +305,7 @@ while 1:
         node = t.find_node(user_input)
         if node != NIL and node != None:
             print("Node height is: " + str(get_black_height(node)))
-        else: 
+        else:
             print("Node does not exist")
     else:
         break
