@@ -41,23 +41,23 @@ class tree:
     #fixes rb tree post-insert to ensure it still follows rb-tree properties
     def rb_insert_fixup(self, node):
         while node.parent.color == RED:
-            if node.parent is node.parent.parent.left:
+            if node.parent == node.parent.parent.left:
                 y = node.parent.parent.right
-                if y.color == RED:
+                if y.color:
                     node.parent.color = BLACK
                     y.color = BLACK
                     node.parent.parent.color = RED
                     node = node.parent.parent
                 else:
-                    if node is node.parent.right:
+                    if node == node.parent.right:
                         node = node.parent
                         self.left_rotate(node)
                     node.parent.color = BLACK
                     node.parent.parent.color = RED
                     self.right_rotate(node.parent.parent)
-            if node.parent is node.parent.parent.right:
+            elif node.parent == node.parent.parent.right:
                 y = node.parent.parent.left
-                if y.color == RED:
+                if y.color:
                     node.parent.color = BLACK
                     y.color = BLACK
                     node.parent.parent.color = RED
@@ -93,6 +93,7 @@ class tree:
             self.rb_transplant(z, z.left)
         else:
             y = z.right.get_minimum()
+            print(y.key, y.color)
             y_original_color = y.color
             x = y.right 
             if y.parent == z:
@@ -170,7 +171,7 @@ class tree:
         else:
             x.parent.right = y
         y.left = x
-        x.p = y
+        x.parent = y
 
     #rotates tree right around node x
     def right_rotate(self, x):
@@ -186,7 +187,7 @@ class tree:
         else:
             x.parent.left = y
         y.right = x
-        x.p = y
+        x.parent = y
 
     #finds a node in tree based on a given value
     def find_node(self, val):
@@ -224,8 +225,10 @@ class node:
         elif level > 1: 
             if self.left != NIL:
                 self.left.print_level(level - 1) 
+            else: print("nil", end=" ")
             if self.right != NIL: 
                 self.right.print_level(level - 1) 
+            else: print("nil", end=" ")
 
     #gets the color of a node in a human-readable string
     def get_color(self):
@@ -237,7 +240,7 @@ class node:
     #gets the minimum node from a subtree
     def get_minimum(self):
         node = self
-        while node != NIL:
+        while node.left != NIL:
             node = node.left
         return node
 
@@ -275,10 +278,12 @@ def initialize(seed = None):
     return t
 
 #runs program in indefinite loop with user input
-user_input = int(input("Initializing tree with 10 nodes... enter an integer below 256 to seed nodes or anything else for the default seed\n"))
+user_input = int(input("Enter an integer below 256 to seed nodes or anything else for the default seed\n"))
 if user_input >= 0 and user_input < 256:
+    print("Initializing tree...")
     t = initialize(user_input)
 else:
+    print("Initializing tree...")
     t = initialize()
 t.print_tree()
 while 1:
@@ -306,3 +311,4 @@ while 1:
             print("Node does not exist")
     else:
         break
+
